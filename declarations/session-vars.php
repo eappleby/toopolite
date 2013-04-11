@@ -148,6 +148,8 @@ if (isset($_REQUEST["s-itv"])) {
 	$_SESSION["meta-title"] = "Interview confirmed on topic 'What does it feel like to ".$_SESSION['a_approvedTopics'][$_SESSION['a_selectedApprovedTopic']['lcv']]['topic']."'";
 }
 
+print_r($_SESSION);
+
 // If this is the first time the user is accessing the website or they are returning to the home page
 if((!isset($_SESSION['a_answeredTopics']))||(isset($_REQUEST["hm"]))) {
 

@@ -84,7 +84,7 @@ function updateTopic ($pk_topic, $pk_category, $s_topic)
 function __openDB() {
 
 	extract(parse_url($_ENV["DATABASE_URL"]));
-	return pg_connect("host=$host port=$port dbname=".substr($path, 1)." user=$user password=$password");
+	return pg_connect("host=$host port=$port dbname=".substr($path, 1)." user=$user password=$pass");
 }
 
 // Private function: Close DB connection
