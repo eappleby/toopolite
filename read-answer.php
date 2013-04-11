@@ -168,7 +168,7 @@
 												</div>
 											</div>
 										</div>
-									</div> */ ?>
+									</div> 
 									<div class="links first">
 										<div class="header">
 											Add New Answer
@@ -177,7 +177,7 @@
 											<a href="<?php echo getUrl("give-your-answer/".$_SESSION['a_selectedAnsweredTopic']['id']."/"); ?>">Give Yours</a><br>
 											<a href="<?php echo getUrl("ask-a-friend/".$_SESSION['a_selectedAnsweredTopic']['id']."/"); ?>">Ask a Friend</a>
 										</div>
-									</div>
+									</div>*/ ?>
 <?php if (count($_SESSION['a_approvedAnswers'])>1) : ?>
 									<div class="links">
 										<div class="header">
