@@ -5,7 +5,7 @@ require("methods/db-calls.php");
 
 $facebook = new Facebook(array(
   'appId'  => '158967034168646',
-  'secret' => getenv("FACEBOOK_SECRET"),
+  'secret' => $_ENV["FACEBOOK_SECRET"],
 ));
 $user = $facebook->getUser();
 

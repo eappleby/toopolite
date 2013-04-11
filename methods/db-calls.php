@@ -83,7 +83,7 @@ function updateTopic ($pk_topic, $pk_category, $s_topic)
 // Private function: Make a MySQL connection
 function __openDB() {
 
-	extract(parse_url(genenv("DATABASE_URL")));
+	extract(parse_url($_ENV["DATABASE_URL"]));
 
 	return pg_connect("host=$host port=$port dbname=".substr($path, 1)." user=$user password=$password");
 }
