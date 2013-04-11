@@ -150,8 +150,8 @@ function __getAnswer ($con, $pk_answer) {
 	$result = pg_query($con, $sql);
 	$result_row = pg_fetch_row($result);
 	if ($result_row) {
-		$result_array["answer"] = htmlspecialchars_decode($result_row[0]);
-		$result_array["topic"] = htmlspecialchars_decode($result_row[1]);
+		$result_array["answer"] = $result_row[0];
+		$result_array["topic"] = $result_row[1];
 		$result_array["url"] = $result_row[2];
 		$result_array["name"] = $result_row[3];
 		$result_array["email"] = $result_row[4];
@@ -185,7 +185,7 @@ function __getTopic ($con, $pk_topic) {
 	$result = pg_query($con, $sql);
 	$result_row = pg_fetch_row($result);
 	if ($result_row) {
-		$result_array["topic"] = htmlspecialchars_decode($result_row[0]);
+		$result_array["topic"] = $result_row[0];
 		$result_array["url"] = $result_row[1];
 		$result_array["name"] = $result_row[2];
 		$result_array["email"] = $result_row[3];
@@ -334,7 +334,7 @@ function getAnswerPrevious ($pk_answer) {
 	
 	__closeDB($con);
 	
-	if ($result_row) { return htmlspecialchars_decode($result_row[0]); }
+	if ($result_row) { return $result_row[0]; }
 	return "";
 }
 
@@ -346,7 +346,7 @@ function getAnswerQuote ($pk_topic) {
 	$result = pg_query($con, $sql);
 	$result_row = pg_fetch_row($result);
 	if ($result_row) {
-		$result_array["quote"] = htmlspecialchars_decode($result_row[0]);
+		$result_array["quote"] = $result_row[0];
 		$result_array["url"] = $result_row[1];
 	}
 
@@ -390,8 +390,8 @@ function getApprovedAnswers ($pk_topic) {
 	while($result_row = pg_fetch_row($result)) {
 		$temp_array = array();
 		$temp_array["id"] = $result_row[0];
-		$temp_array["answer"] = htmlspecialchars_decode($result_row[1]);
-		$temp_array["quote"] = htmlspecialchars_decode($result_row[2]);
+		$temp_array["answer"] = $result_row[1];
+		$temp_array["quote"] = $result_row[2];
 		$temp_array["rating"] = $result_row[3];
 		$temp_array["name"] = $result_row[4];
 		$temp_array["anonymous"] = $result_row[5];
@@ -421,7 +421,7 @@ function getApprovedTopics () {
 		if (!isset($topic_array[$result_row[0]])) {
 			$temp_array = array();
 			$temp_array["id"] = $result_row[0];
-			$temp_array["topic"] = htmlspecialchars_decode($result_row[1]);
+			$temp_array["topic"] = $result_row[1];
 			$temp_array["categoryid"] = $result_row[2];
 			$temp_array["answered"] = (isApproved($result_row[3]));
 			$temp_array["name"] = $result_row[4];
@@ -449,7 +449,7 @@ function getAnsweredTopics () {
 	while($result_row = pg_fetch_row($result)) {
 		$temp_array = array();
 		$temp_array["id"] = $result_row[0];
-		$temp_array["topic"] = htmlspecialchars_decode($result_row[1]);
+		$temp_array["topic"] = $result_row[1];
 		$temp_array["url"] = $result_row[2];
 		$temp_array["categoryid"] = $result_row[3];
 		$result_array[] = $temp_array;
@@ -595,7 +595,7 @@ function getRecentlyapprovedAnswers() {
 			$temp_array = array();
 			$temp_array["url"] = $result_row[1];
 			$temp_array["id"] = $result_row[2];
-			$temp_array["topic"] = htmlspecialchars_decode($result_row[3]);
+			$temp_array["topic"] = $result_row[3];
 			$result_array[] = $temp_array;
 			$topic_array[$result_row[0]] = 1;
 		}
