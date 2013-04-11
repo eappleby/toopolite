@@ -442,8 +442,6 @@ function getApprovedTopics () {
 function getAnsweredTopics () {
 	$con = __openDB();
 	
-	echo "EVAN!";
-	
 	$result_array = array();
 	$sql = "SELECT DISTINCT topics.id, topics.topic, topics.topic_url, topics.categoryId FROM topics, answers WHERE topics.id=answers.topicId AND answers.status='1' ORDER BY topics.topic";
 	$result = pg_query($con, $sql);
