@@ -230,6 +230,10 @@ function emailAnswer ($pk_answer, $s_topic, $s_name, $s_email, $s_friendName, $s
 	$mail->AddReplyTo("info@toopolite.com", "Admin");
 	$mail->From = "info@toopolite.com";
 	$mail->FromName = "Too Polite To Ask";
+	$mail->Host = "smtp.sendgrid.net";
+	$mail->Port = 587;
+	$mail->Username = $_ENV["SENDGRID_USERNAME"];
+	$mail->Password = $_ENV["SENDGRID_PASSWORD"];
 
 	$mail->AddAddress($s_friendEmail, $s_friendName);
 	if ($b_cc) { $mail->AddCC($s_email, $s_name); }
@@ -267,6 +271,10 @@ function emailTopic ($pk_topic, $s_topic, $s_name, $s_email, $s_friendName, $s_f
 	
 	$mail->From = "info@toopolite.com";
 	$mail->FromName = "Too Polite To Ask";
+	$mail->Host = "smtp.sendgrid.net";
+	$mail->Port = 587;
+	$mail->Username = $_ENV["SENDGRID_USERNAME"];
+	$mail->Password = $_ENV["SENDGRID_PASSWORD"];
 
 	$mail->AddAddress($s_friendEmail, $s_friendName);
 	if ($b_cc) { $mail->AddCC($s_email, $s_name); }
@@ -900,6 +908,10 @@ function emailUser ($s_name, $s_email, $s_subject, $s_message) {
 
 	$mail->From = "info@toopolite.com";
 	$mail->FromName = "Too Polite To Ask";
+	$mail->Host = "smtp.sendgrid.net";
+	$mail->Port = 587;
+	$mail->Username = $_ENV["SENDGRID_USERNAME"];
+	$mail->Password = $_ENV["SENDGRID_PASSWORD"];
 
 	$mail->AddAddress($s_email, $s_name);
 
