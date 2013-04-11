@@ -26,6 +26,7 @@
 							</div>
 							<div class="answer-and-links-wrapper">
 								<div class="links-wrapper">
+<?php /*								
 									<div class="links first">
 										<div id="load-fb-component">
 											<div id="facebook-share">
@@ -167,8 +168,8 @@
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="links">
+									</div> */ ?>
+									<div class="links first">
 										<div class="header">
 											Add New Answer
 										</div>
