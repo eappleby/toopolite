@@ -82,20 +82,15 @@ function updateTopic ($pk_topic, $pk_category, $s_topic)
 
 // Private function: Make a MySQL connection
 function __openDB() {
-	$con = mysql_connect("localhost", "eappleby_d1ehard", "cRLWQDLS!T)_");
-	if (!$con) {
-		die('Could not connect: ' . mysql_error());
-	}
-	$db_selected = mysql_select_db("eappleby_tpta", $con);
-	if (!$db_selected) {
-		die ("Can\'t use eappleby_tpta : " . mysql_error());
-	}
-	return $con;
+
+	extract(parse_url(genenv("DATABASE_URL")));
+
+	return pg_connect("host=$host port=$port dbname=".substr($path, 1)." user=$user password=$password");
 }
 
 // Private function: Close DB connection
 function __closeDB ($con) {
-	mysql_close($con);
+	pg_close($con);
 }
 
 // Private function: Converts non-zero to 1 and zero/empty to 0
@@ -106,15 +101,15 @@ function __bool ($b_var) {
 
 // Private function: Sanitizes string for input into database
 function __dbClean ($string, $con) {
-	$abc = mysql_real_escape_string($string, $con);
+	$abc = pg_escape_string($con, $string);
 	return $abc;
 }
 
 // Private function: Add new author into author database; returns author id (overwrite flag should only be set to true when using verified name, e.g. from Facebook Connect)
 function __addAuthor ($con, $s_name, $s_email, $b_newsletter, $b_overwrite=false) {
 	$sql = "SELECT id FROM authors WHERE email='".__dbClean ($s_email, $con)."'";
-	$result = mysql_query($sql,$con);
-	$result_row = mysql_fetch_row($result);
+	$result = pg_query($con, $sql);
+	$result_row = pg_fetch_row($result);
 	
 	// if author already in database and we want to overwrite name
 	if (($b_overwrite) && ($result_row)) {
@@ -124,14 +119,14 @@ function __addAuthor ($con, $s_name, $s_email, $b_newsletter, $b_overwrite=false
 		if ($b_newsletter) { 
 			$sql .= ", newsletter=".__bool($b_newsletter);
 		}
-		if (!mysql_query($sql . $where,$con)) { die('Could not insert new author into database: ' . mysql_error()); }
+		if (!pg_query($con, $sql . $where)) { die('Could not insert new author into database: ' . pg_last_error()); }
 	} elseif (!$result_row) {
 		$sql = "INSERT INTO authors (name, email, newsletter) VALUES ('".__dbClean($s_name, $con)."', '".__dbClean($s_email, $con)."', '" .__bool($b_newsletter). "')";
-		if (!mysql_query($sql,$con)) { die('Could not insert new author into database: ' . mysql_error()); }
+		if (!pg_query($con, $sql)) { die('Could not insert new author into database: ' . pg_last_error()); }
 		
 		$sql = "SELECT id FROM authors WHERE email='".__dbClean ($s_email, $con)."'";
-		$result = mysql_query($sql,$con);
-		$result_row = mysql_fetch_row($result);
+		$result = pg_query($con, $sql);
+		$result_row = pg_fetch_row($result);
 	}
 
 	return $result_row[0];
@@ -141,8 +136,8 @@ function __addAuthor ($con, $s_name, $s_email, $b_newsletter, $b_overwrite=false
 // Private Function: Returns the topic ID if topic exists and FALSE if topic does not exist
 function __doesTopicExist ($con, $s_topic) {
 	$sql = "SELECT id FROM topics WHERE topic='".__dbClean ($s_topic, $con)."'";
-	$result = mysql_query($sql,$con);
-	$result_row = mysql_fetch_row($result);
+	$result = pg_query($con, $sql);
+	$result_row = pg_fetch_row($result);
 	
 	if ($result_row) { return $result_row[0]; }
 	return FALSE;
@@ -152,8 +147,8 @@ function __doesTopicExist ($con, $s_topic) {
 function __getAnswer ($con, $pk_answer) {
 	$result_array = array();
 	$sql = "SELECT answers.answer, topics.topic, topics.topic_url, authors.name, authors.email, answers.anonymous, answers.citation_name, answers.citation_url, answers.audio, moods.rgb, DATE_FORMAT(answers.dt_created,'%b %d'), DATE_FORMAT(answers.dt_updated,'%b %d'), views.viewCount FROM answers, topics, authors, moods, views WHERE answers.topicId=topics.id AND answers.authorId=authors.id AND answers.moodId=moods.id AND answers.id=views.answerId AND answers.id='$pk_answer'";
-	$result = mysql_query($sql,$con);
-	$result_row = mysql_fetch_row($result);
+	$result = pg_query($con, $sql);
+	$result_row = pg_fetch_row($result);
 	if ($result_row) {
 		$result_array["answer"] = $result_row[0];
 		$result_array["topic"] = $result_row[1];
@@ -176,8 +171,8 @@ function __getAnswer ($con, $pk_answer) {
 // Returns -1 if answer is not found, 0 if answer is pending, 1 if approved and 2 if denied
 function __getAnswerStatus ($con, $pk_answer) {
 	$sql = "SELECT status FROM answers WHERE id='".__dbClean ($pk_answer, $con)."'";
-	$result = mysql_query($sql,$con);
-	$result_row = mysql_fetch_row($result);
+	$result = pg_query($con, $sql);
+	$result_row = pg_fetch_row($result);
 	
 	if ($result_row) return $result_row[0];
 	return 3;
@@ -187,8 +182,8 @@ function __getAnswerStatus ($con, $pk_answer) {
 function __getTopic ($con, $pk_topic) {
 	$result_array = array();
 	$sql = "SELECT topics.topic, topics.topic_url, authors.name, authors.email, topics.notifyAuth, DATE_FORMAT(topics.dt_created,'%b %d'), DATE_FORMAT(topics.dt_updated,'%b %d') FROM topics, authors WHERE topics.authorId=authors.id AND topics.id='$pk_topic'";
-	$result = mysql_query($sql,$con);
-	$result_row = mysql_fetch_row($result);
+	$result = pg_query($con, $sql);
+	$result_row = pg_fetch_row($result);
 	if ($result_row) {
 		$result_array["topic"] = $result_row[0];
 		$result_array["url"] = $result_row[1];
@@ -204,8 +199,8 @@ function __getTopic ($con, $pk_topic) {
 // Returns 0 if topic is pending, 1 if approved and 2 if denied
 function __getTopicStatus ($con, $pk_topic) {
 	$sql = "SELECT status FROM topics WHERE id='".__dbClean ($pk_topic, $con)."'";
-	$result = mysql_query($sql,$con);
-	$result_row = mysql_fetch_row($result);
+	$result = pg_query($con, $sql);
+	$result_row = pg_fetch_row($result);
 
 	if ($result_row) return $result_row[0];
 	return 3;
@@ -304,8 +299,8 @@ function getAnswerCategory ($pk_answer) {
 	
 	$result_array = array();
 	$sql = "SELECT category FROM answers, topics, categories WHERE answers.id='$pk_answer' AND answers.topicId=topics.id AND topics.categoryId=categories.id";
-	$result = mysql_query($sql,$con);
-	$result_row = mysql_fetch_row($result);
+	$result = pg_query($con, $sql);
+	$result_row = pg_fetch_row($result);
 	
 	__closeDB($con);
 	
@@ -319,8 +314,8 @@ function getAnswerFirst ($pk_answer) {
 	
 	$result_array = array();
 	$sql = "SELECT answer_first FROM answers WHERE id='$pk_answer'";
-	$result = mysql_query($sql,$con);
-	$result_row = mysql_fetch_row($result);
+	$result = pg_query($con, $sql);
+	$result_row = pg_fetch_row($result);
 	
 	__closeDB($con);
 	
@@ -334,8 +329,8 @@ function getAnswerPrevious ($pk_answer) {
 	
 	$result_array = array();
 	$sql = "SELECT answer_previous FROM answers WHERE id='$pk_answer'";
-	$result = mysql_query($sql,$con);
-	$result_row = mysql_fetch_row($result);
+	$result = pg_query($con, $sql);
+	$result_row = pg_fetch_row($result);
 	
 	__closeDB($con);
 	
@@ -348,8 +343,8 @@ function getAnswerQuote ($pk_topic) {
 	$con = __openDB();
 		
 	$sql = "SELECT quote FROM answers WHERE rating=(SELECT MAX(rating) FROM answers WHERE topicId='$pk_topic') AND topicId='$pk_topic'";
-	$result = mysql_query($sql,$con);
-	$result_row = mysql_fetch_row($result);
+	$result = pg_query($con, $sql);
+	$result_row = pg_fetch_row($result);
 	if ($result_row) {
 		$result_array["quote"] = $result_row[0];
 		$result_array["url"] = $result_row[1];
@@ -376,8 +371,8 @@ function getAnswerTopic ($pk_answer) {
 	$con = __openDB();
 		
 	$sql = "SELECT topicId FROM answers WHERE id='$pk_answer'";
-	$result = mysql_query($sql,$con);
-	$result_row = mysql_fetch_row($result);
+	$result = pg_query($con, $sql);
+	$result_row = pg_fetch_row($result);
 	
 	__closeDB($con);
 	
@@ -391,8 +386,8 @@ function getApprovedAnswers ($pk_topic) {
 		
 	$result_array = array();
 	$sql = "SELECT answers.id, answers.answer, answers.quote, answers.rating, authors.name, answers.anonymous, answers.citation_name, answers.citation_url, answers.audio, answers.moodId, DATE_FORMAT(answers.dt_created,'%b %d'), DATE_FORMAT(answers.dt_updated,'%b %d') FROM answers, authors WHERE answers.authorId = authors.id AND answers.topicId='$pk_topic' AND answers.status='1' ORDER BY answers.rating DESC";
-	$result = mysql_query($sql,$con);
-	while($result_row = mysql_fetch_row($result)) {
+	$result = pg_query($con, $sql);
+	while($result_row = pg_fetch_row($result)) {
 		$temp_array = array();
 		$temp_array["id"] = $result_row[0];
 		$temp_array["answer"] = $result_row[1];
@@ -421,8 +416,8 @@ function getApprovedTopics () {
 	$topic_array = array();	
 	$result_array = array();
 	$sql = "SELECT DISTINCT topics.id, topics.topic, topics.categoryId, answers.status, authors.name, DATE_FORMAT(topics.dt_created,'%b %d'), DATE_FORMAT(topics.dt_updated,'%b %d') FROM authors, topics LEFT JOIN answers ON topics.id=answers.topicId WHERE topics.authorId=authors.id AND topics.status='1' ORDER BY topics.topic";
-	$result = mysql_query($sql,$con);
-	while($result_row = mysql_fetch_row($result)) {
+	$result = pg_query($con, $sql);
+	while($result_row = pg_fetch_row($result)) {
 		if (!isset($topic_array[$result_row[0]])) {
 			$temp_array = array();
 			$temp_array["id"] = $result_row[0];
@@ -450,8 +445,8 @@ function getAnsweredTopics () {
 	
 	$result_array = array();
 	$sql = "SELECT DISTINCT topics.id, topics.topic, topics.topic_url, topics.categoryId FROM topics, answers WHERE topics.id=answers.topicId AND answers.status='1' ORDER BY topics.topic";
-	$result = mysql_query($sql,$con);
-	while($result_row = mysql_fetch_row($result)) {
+	$result = pg_query($con, $sql);
+	while($result_row = pg_fetch_row($result)) {
 		$temp_array = array();
 		$temp_array["id"] = $result_row[0];
 		$temp_array["topic"] = $result_row[1];
@@ -471,8 +466,8 @@ function getCategories () {
 
 	$result_array = array();
 	$sql = "SELECT id, category, description FROM categories ORDER BY id";
-	$result = mysql_query($sql,$con);
-	while($result_row = mysql_fetch_row($result)) {
+	$result = pg_query($con, $sql);
+	while($result_row = pg_fetch_row($result)) {
 		$temp_array = array();
 		$temp_array["id"] = $result_row[0];
 		$temp_array["category"] = $result_row[1];
@@ -492,8 +487,8 @@ function getCategoryTopics ($pk_category, $pk_excludedTopic="-1") {
 	$topic_array = array();
 	$result_array = array();
 	$sql = "SELECT topics.id, topics.topic, topics.topic_url, answers.id FROM topics, answers WHERE topics.id=answers.topicId AND answers.status='1' AND topics.categoryId='$pk_category' AND topics.id!='$pk_excludedTopic' ORDER BY answers.rating DESC LIMIT 10";
-	$result = mysql_query($sql,$con);
-	while($result_row = mysql_fetch_row($result)) {
+	$result = pg_query($con, $sql);
+	while($result_row = pg_fetch_row($result)) {
 		if (!isset($topic_array[$result_row[0]])) {
 			$temp_array = array();
 			$temp_array["id"] = $result_row[0];
@@ -524,8 +519,8 @@ function getMoods () {
 
 	$result_array = array();
 	$sql = "SELECT id, mood, rgb, font_color FROM moods ORDER BY id";
-	$result = mysql_query($sql,$con);
-	while($result_row = mysql_fetch_row($result)) {
+	$result = pg_query($con, $sql);
+	while($result_row = pg_fetch_row($result)) {
 		$temp_array = array();
 		$temp_array["id"] = $result_row[0];
 		$temp_array["mood"] = $result_row[1];
@@ -546,8 +541,8 @@ function getMostViewedAnswers() {
 	$topic_array = array();
 	$result_array = array();
 	$sql = "SELECT topics.id, topics.topic_url, answers.id, topics.topic, views.viewCount FROM topics, answers, views WHERE topics.id=answers.topicId AND answers.id=views.answerId AND answers.status='1' ORDER BY views.viewCount DESC LIMIT 10";
-	$result = mysql_query($sql,$con);
-	while($result_row = mysql_fetch_row($result)) {
+	$result = pg_query($con, $sql);
+	while($result_row = pg_fetch_row($result)) {
 		if (!isset($topic_array[$result_row[0]])) {
 			$temp_array = array();
 			$temp_array["url"] = $result_row[1];
@@ -570,8 +565,8 @@ function getRecentlyViewedAnswers() {
 	$topic_array = array();
 	$result_array = array();
 	$sql = "SELECT topics.id, topics.topic_url, answers.id, topics.topic, views.dt_updated FROM topics, answers, views WHERE topics.id=answers.topicId AND answers.id=views.answerId AND answers.status='1' ORDER BY views.dt_updated DESC LIMIT 10";
-	$result = mysql_query($sql,$con);
-	while($result_row = mysql_fetch_row($result)) {
+	$result = pg_query($con, $sql);
+	while($result_row = pg_fetch_row($result)) {
 		if (!isset($topic_array[$result_row[0]])) {
 			$temp_array = array();
 			$temp_array["url"] = $result_row[1];
@@ -594,8 +589,8 @@ function getRecentlyApprovedAnswers() {
 	$topic_array = array();
 	$result_array = array();
 	$sql = "SELECT topics.id, topics.topic_url, answers.id, topics.topic, answers.dt_created FROM topics, answers WHERE topics.id=answers.topicId AND answers.status='1' ORDER BY answers.dt_created DESC LIMIT 10";
-	$result = mysql_query($sql,$con);
-	while($result_row = mysql_fetch_row($result)) {
+	$result = pg_query($con, $sql);
+	while($result_row = pg_fetch_row($result)) {
 		if (!isset($topic_array[$result_row[0]])) {
 			$temp_array = array();
 			$temp_array["url"] = $result_row[1];
@@ -682,8 +677,8 @@ function isTopicAnswered ($pk_topic) {
 
 	$result_array = array();
 	$sql = "SELECT topics.id FROM topics, answers WHERE topics.id='$pk_topic' AND topics.id=answers.topicId AND answers.status='1' LIMIT 1";
-	$result = mysql_query($sql,$con);
-	$result_row = mysql_fetch_row($result);
+	$result = pg_query($con, $sql);
+	$result_row = pg_fetch_row($result);
 	
 	__closeDB($con);
 	
@@ -747,7 +742,7 @@ function addAnswer ($pk_topic, $s_name, $s_email, $s_answer, $b_anonymous, $b_bo
 	
 	$pk_author = __addAuthor ($con, $s_name, $s_email, $b_newsletter, true);
 	$sql = "INSERT INTO answers (topicId, answer, answer_first, answer_previous, authorId, anonymous, book, citation_name, citation_url, audio) VALUES ('$pk_topic', '".__dbClean($s_answer, $con)."', '".__dbClean($s_answer, $con)."', '".__dbClean($s_answer, $con)."', '$pk_author', '" . __bool($b_anonymous) . "', '" . __bool($b_book) . "', '".__dbClean($s_citationName, $con)."', '".__dbClean($s_citationUrl, $con)."', '".__dbClean($s_audio, $con)."')";
-	if (!mysql_query($sql,$con)) { die('Could not insert new answer into database: ' . mysql_error()); }	
+	if (!pg_query($con, $sql)) { die('Could not insert new answer into database: ' . pg_last_error()); }	
 	
 	__closeDB($con);
 
@@ -773,7 +768,7 @@ function addTopic ($s_topic, $s_name, $s_email, $b_notifyAuth, $b_newsletter) {
 	if (!$pk_existingTopic) {
 		$pk_author = __addAuthor ($con, $s_name, $s_email, $b_newsletter);	
 		$sql = "INSERT INTO topics (topic, topic_url, authorId, notifyAuth) VALUES ('".__dbClean($s_topic, $con)."', '" . stringToUrl(__dbClean($s_topic, $con)) ."', '$pk_author', " . __bool($b_notifyAuth) . ")";
-		if (!mysql_query($sql,$con)) { die('Could not insert new topic into database: ' . mysql_error()); }
+		if (!pg_query($con, $sql)) { die('Could not insert new topic into database: ' . pg_last_error()); }
 	}
 	__closeDB($con);
 	
@@ -792,7 +787,7 @@ function confirmInterview ($pk_topic, $s_name, $s_email, $s_biography, $b_legal,
 	
 	$pk_author = __addAuthor ($con, $s_name, $s_email, $b_newsletter);
 	$sql = "INSERT INTO interviews (topicId, name, biography, anonymous, legal) VALUES ('$pk_topic', '".__dbClean($s_name, $con)."', '".__dbClean($s_biography, $con)."', " . __bool($b_anonymous) . ", " . __bool($b_legal) .")";
-	if (!mysql_query($sql,$con)) { die('Could not insert interview information into database: ' . mysql_error()); }	
+	if (!pg_query($con, $sql)) { die('Could not insert interview information into database: ' . pg_last_error()); }	
 	
 	__closeDB($con);
 
@@ -807,7 +802,7 @@ function addCategory ($s_category, $s_description) {
 	$con = __openDB();
 	
 	$sql = "INSERT INTO categories (category, description) VALUES ('".__dbClean($s_category, $con)."', '".__dbClean($s_description, $con)."')";
-	if (!mysql_query($sql,$con)) { die('Could not insert new category into database: ' . mysql_error()); }	
+	if (!pg_query($con, $sql)) { die('Could not insert new category into database: ' . pg_last_error()); }	
 	
 	__closeDB($con);
 }
@@ -817,7 +812,7 @@ function addMood ($s_mood, $s_rgb, $s_fontColor="FFF") {
 	$con = __openDB();
 	
 	$sql = "INSERT INTO moods (mood, rgb, font_color) VALUES ('".__dbClean($s_mood, $con)."', '".__dbClean($s_rgb, $con)."', '".__dbClean($s_fontColor, $con)."')";
-	if (!mysql_query($sql,$con)) { die('Could not insert new mood into database: ' . mysql_error()); }	
+	if (!pg_query($con, $sql)) { die('Could not insert new mood into database: ' . pg_last_error()); }	
 	
 	__closeDB($con);
 }
@@ -827,7 +822,7 @@ function approveAnswer ($pk_answer, $pk_mood, $s_quote, $i_rating=0) {
 	$con = __openDB();
 	
 	$sql = "UPDATE answers SET status='1', moodId='$pk_mood', quote='".__dbClean($s_quote, $con)."', rating='".__dbClean($i_rating, $con)."' WHERE id='$pk_answer'";
-	if (!mysql_query($sql,$con)) { die('Could not approve answer in database: ' . mysql_error()); }
+	if (!pg_query($con, $sql)) { die('Could not approve answer in database: ' . pg_last_error()); }
 	
 	$a_answer = __getAnswer ($con, $pk_answer);
 
@@ -853,7 +848,7 @@ function approveTopic ($pk_topic, $pk_category, $s_topic) {
 	$con = __openDB();
 	
 	$sql = "UPDATE topics SET status='1', categoryId='$pk_category', topic='".__dbClean($s_topic, $con)."', topic_url='" . stringToUrl(__dbClean($s_topic, $con)) ."' WHERE id='$pk_topic'";
-	if (!mysql_query($sql,$con)) { die('Could not approve topic in database: ' . mysql_error()); }
+	if (!pg_query($con, $sql)) { die('Could not approve topic in database: ' . pg_last_error()); }
 	
 	$a_topic = __getTopic ($con, $pk_topic);
 	
@@ -880,7 +875,7 @@ function denyAnswer ($pk_answer) {
 	$con = __openDB();
 	
 	$sql = "UPDATE answers SET status='2' WHERE id='$pk_answer'";
-	if (!mysql_query($sql,$con)) { die('Could not deny answer from database: ' . mysql_error()); }
+	if (!pg_query($con, $sql)) { die('Could not deny answer from database: ' . pg_last_error()); }
 	
 	__closeDB($con);
 }
@@ -890,7 +885,7 @@ function denyTopic ($pk_topic) {
 	$con = __openDB();
 	
 	$sql = "UPDATE topics SET status='2' WHERE id='$pk_topic'";
-	if (!mysql_query($sql,$con)) { die('Could not deny topic from database: ' . mysql_error()); }
+	if (!pg_query($con, $sql)) { die('Could not deny topic from database: ' . pg_last_error()); }
 	
 	__closeDB($con);
 }
@@ -925,8 +920,8 @@ function getSitemapData () {
 
 	$result_array = array();
 	$sql = "SELECT answers.id, topics.topic_url, DATE_FORMAT(answers.dt_updated,'%Y-%m-%d'), answers.rating FROM answers, topics WHERE answers.topicId=topics.id AND answers.status='1'";
-	$result = mysql_query($sql,$con);
-	while($result_row = mysql_fetch_row($result)) {
+	$result = pg_query($con, $sql);
+	while($result_row = pg_fetch_row($result)) {
 		$temp_array = array();
 		$temp_array["id"] = $result_row[0];
 		$temp_array["url"] = $result_row[1];
@@ -946,8 +941,8 @@ function getTopicsWithUnapprovedAnswers () {
 
 	$result_array = array();
 	$sql = "SELECT DISTINCT topics.id, topics.topic FROM topics, answers WHERE topics.id=answers.topicId AND answers.status='0' ORDER BY topics.topic";
-	$result = mysql_query($sql,$con);
-	while($result_row = mysql_fetch_row($result)) {
+	$result = pg_query($con, $sql);
+	while($result_row = pg_fetch_row($result)) {
 		$temp_array = array();
 		$temp_array["id"] = $result_row[0];
 		$temp_array["topic"] = $result_row[1];
@@ -965,8 +960,8 @@ function getUnapprovedAnswers ($pk_topic) {
 		
 	$result_array = array();
 	$sql = "SELECT answers.id, answers.answer, authors.name, answers.anonymous, answers.citation_name, answers.citation_url, answers.audio, DATE_FORMAT(answers.dt_created,'%b %d'), DATE_FORMAT(answers.dt_updated,'%b %d') FROM answers, authors WHERE answers.authorId = authors.id AND answers.topicId='$pk_topic' AND answers.status='0' ORDER BY answers.dt_created DESC";
-	$result = mysql_query($sql,$con);
-	while($result_row = mysql_fetch_row($result)) {
+	$result = pg_query($con, $sql);
+	while($result_row = pg_fetch_row($result)) {
 		$temp_array = array();
 		$temp_array["id"] = $result_row[0];
 		$temp_array["answer"] = $result_row[1];
@@ -991,8 +986,8 @@ function getUnapprovedTopics () {
 
 	$result_array = array();
 	$sql = "SELECT topics.id, topics.topic, authors.name, DATE_FORMAT(topics.dt_created,'%b %d') FROM topics, authors WHERE topics.authorId=authors.id AND status='0' ORDER BY topics.dt_created DESC, topics.topic";
-	$result = mysql_query($sql,$con);
-	while($result_row = mysql_fetch_row($result)) {
+	$result = pg_query($con, $sql);
+	while($result_row = pg_fetch_row($result)) {
 		$temp_array = array();
 		$temp_array["id"] = $result_row[0];
 		$temp_array["topic"] = $result_row[1];
@@ -1011,7 +1006,7 @@ function incrementViewCount ($pk_answer) {
 	$con = __openDB();
 
 	$sql = "UPDATE views SET viewCount=viewCount+1 WHERE answerId='$pk_answer'";
-	if (!mysql_query($sql,$con)) { die('Could not increment view count in database: ' . mysql_error()); }
+	if (!pg_query($con, $sql)) { die('Could not increment view count in database: ' . pg_last_error()); }
 	
 	__closeDB($con);
 }
@@ -1027,7 +1022,7 @@ function updateAnswer ($pk_answer, $s_answer, $pk_mood, $s_quote, $i_rating, $s_
 	if ($a_answer["audio"]) { $s_answerPrevious .= "\n".$a_answer["audio"]; }
 
 	$sql = "UPDATE answers SET answer='".__dbClean($s_answer, $con)."', answer_previous='".__dbClean($s_answerPrevious, $con)."', moodId='$pk_mood', quote='".__dbClean($s_quote, $con)."', rating='".__dbClean($i_rating, $con)."', citation_name='".__dbClean($s_citationName, $con)."', citation_url='".__dbClean($s_citationUrl, $con)."', audio='".__dbClean($s_audio, $con)."' WHERE id='$pk_answer'";
-	if (!mysql_query($sql,$con)) { die('Could not update answer in database: ' . mysql_error()); }
+	if (!pg_query($con, $sql)) { die('Could not update answer in database: ' . pg_last_error()); }
 	
 	__closeDB($con);
 }
@@ -1037,7 +1032,7 @@ function updateTopic ($pk_topic, $pk_category, $s_topic) {
 	$con = __openDB();
 
 	$sql = "UPDATE topics SET categoryId='$pk_category', topic='".__dbClean($s_topic, $con)."', topic_url='" . stringToUrl(__dbClean($s_topic, $con)) ."' WHERE id='$pk_topic'";
-	if (!mysql_query($sql,$con)) { die('Could not update topic in database: ' . mysql_error()); }
+	if (!pg_query($con, $sql)) { die('Could not update topic in database: ' . pg_last_error()); }
 
 	__closeDB($con);
 }
