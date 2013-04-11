@@ -84,7 +84,6 @@ function updateTopic ($pk_topic, $pk_category, $s_topic)
 function __openDB() {
 
 	extract(parse_url($_ENV["DATABASE_URL"]));
-
 	return pg_connect("host=$host port=$port dbname=".substr($path, 1)." user=$user password=$password");
 }
 
@@ -443,6 +442,8 @@ function getApprovedTopics () {
 function getAnsweredTopics () {
 	$con = __openDB();
 	
+	echo "EVAN!";
+	
 	$result_array = array();
 	$sql = "SELECT DISTINCT topics.id, topics.topic, topics.topic_url, topics.categoryId FROM topics, answers WHERE topics.id=answers.topicId AND answers.status='1' ORDER BY topics.topic";
 	$result = pg_query($con, $sql);
@@ -631,12 +632,12 @@ function getTopicStatus ($pk_topic) {
 // Return string of Too Polite To Ask domain (e.g. "http://toopolite.com/")
 function getUrl ($uri="", $b_currentPage=false) {
 	if ($b_currentPage) {
-		return "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']; 
+		return "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; 
 	}
 	if (substr($uri, 0, 1) == "/") {
-		return "http://".$_SERVER['SERVER_NAME'].$uri;
+		return "http://".$_SERVER['HTTP_HOST'].$uri;
 	}
-	return "http://".$_SERVER['SERVER_NAME']."/".$uri;
+	return "http://".$_SERVER['HTTP_HOST']."/".$uri;
 }
 
 // return TRUE if status=1

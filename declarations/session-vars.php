@@ -28,7 +28,7 @@
  * "adm-..." -- designated as an admin page
  *
  **************************************************/
-
+ 
 // By default, the overlay window and whitewash will not be shown
 $b_overlay = FALSE;
 
