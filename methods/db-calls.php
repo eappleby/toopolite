@@ -146,7 +146,7 @@ function __doesTopicExist ($con, $s_topic) {
 // Return associated answer information when given answer pkey
 function __getAnswer ($con, $pk_answer) {
 	$result_array = array();
-	$sql = "SELECT answers.answer, topics.topic, topics.topic_url, authors.name, authors.email, answers.anonymous, answers.citation_name, answers.citation_url, answers.audio, moods.rgb, DATE_FORMAT(answers.dt_created,'%b %d'), DATE_FORMAT(answers.dt_updated,'%b %d'), views.viewcount FROM answers, topics, authors, moods, views WHERE answers.topicid=topics.id AND answers.authorid=authors.id AND answers.moodid=moods.id AND answers.id=views.answerid AND answers.id='$pk_answer'";
+	$sql = "SELECT answers.answer, topics.topic, topics.topic_url, authors.name, authors.email, answers.anonymous, answers.citation_name, answers.citation_url, answers.audio, moods.rgb, answers.dt_created, answers.dt_updated, views.viewcount FROM answers, topics, authors, moods, views WHERE answers.topicid=topics.id AND answers.authorid=authors.id AND answers.moodid=moods.id AND answers.id=views.answerid AND answers.id='$pk_answer'";
 	$result = pg_query($con, $sql);
 	$result_row = pg_fetch_row($result);
 	if ($result_row) {
@@ -181,7 +181,7 @@ function __getAnswerStatus ($con, $pk_answer) {
 // return topic, url, name, email, notify, dt_created, and dt_updated when given topic id
 function __getTopic ($con, $pk_topic) {
 	$result_array = array();
-	$sql = "SELECT topics.topic, topics.topic_url, authors.name, authors.email, topics.notifyauth, DATE_FORMAT(topics.dt_created,'%b %d'), DATE_FORMAT(topics.dt_updated,'%b %d') FROM topics, authors WHERE topics.authorid=authors.id AND topics.id='$pk_topic'";
+	$sql = "SELECT topics.topic, topics.topic_url, authors.name, authors.email, topics.notifyauth, topics.dt_created, topics.dt_updated FROM topics, authors WHERE topics.authorid=authors.id AND topics.id='$pk_topic'";
 	$result = pg_query($con, $sql);
 	$result_row = pg_fetch_row($result);
 	if ($result_row) {
@@ -415,7 +415,7 @@ function getApprovedTopics () {
 
 	$topic_array = array();	
 	$result_array = array();
-	$sql = "SELECT DISTINCT topics.id, topics.topic, topics.categoryid, answers.status, authors.name, DATE_FORMAT(topics.dt_created,'%b %d'), DATE_FORMAT(topics.dt_updated,'%b %d') FROM authors, topics LEFT JOIN answers ON topics.id=answers.topicid WHERE topics.authorid=authors.id AND topics.status='1' ORDER BY topics.topic";
+	$sql = "SELECT DISTINCT topics.id, topics.topic, topics.categoryid, answers.status, authors.name, topics.dt_created, topics.dt_updated FROM authors, topics LEFT JOIN answers ON topics.id=answers.topicid WHERE topics.authorid=authors.id AND topics.status='1' ORDER BY topics.topic";
 	$result = pg_query($con, $sql);
 	while($result_row = pg_fetch_row($result)) {
 		if (!isset($topic_array[$result_row[0]])) {
@@ -919,7 +919,7 @@ function getSitemapData () {
 	$con = __openDB();
 
 	$result_array = array();
-	$sql = "SELECT answers.id, topics.topic_url, DATE_FORMAT(answers.dt_updated,'%Y-%m-%d'), answers.rating FROM answers, topics WHERE answers.topicid=topics.id AND answers.status='1'";
+	$sql = "SELECT answers.id, topics.topic_url, answers.dt_updated, answers.rating FROM answers, topics WHERE answers.topicid=topics.id AND answers.status='1'";
 	$result = pg_query($con, $sql);
 	while($result_row = pg_fetch_row($result)) {
 		$temp_array = array();
@@ -959,7 +959,7 @@ function getUnapprovedAnswers ($pk_topic) {
 	$con = __openDB();
 		
 	$result_array = array();
-	$sql = "SELECT answers.id, answers.answer, authors.name, answers.anonymous, answers.citation_name, answers.citation_url, answers.audio, DATE_FORMAT(answers.dt_created,'%b %d'), DATE_FORMAT(answers.dt_updated,'%b %d') FROM answers, authors WHERE answers.authorid = authors.id AND answers.topicid='$pk_topic' AND answers.status='0' ORDER BY answers.dt_created DESC";
+	$sql = "SELECT answers.id, answers.answer, authors.name, answers.anonymous, answers.citation_name, answers.citation_url, answers.audio, answers.dt_created, answers.dt_updated FROM answers, authors WHERE answers.authorid = authors.id AND answers.topicid='$pk_topic' AND answers.status='0' ORDER BY answers.dt_created DESC";
 	$result = pg_query($con, $sql);
 	while($result_row = pg_fetch_row($result)) {
 		$temp_array = array();
@@ -985,7 +985,7 @@ function getUnapprovedTopics () {
 	$con = __openDB();
 
 	$result_array = array();
-	$sql = "SELECT topics.id, topics.topic, authors.name, DATE_FORMAT(topics.dt_created,'%b %d') FROM topics, authors WHERE topics.authorid=authors.id AND status='0' ORDER BY topics.dt_created DESC, topics.topic";
+	$sql = "SELECT topics.id, topics.topic, authors.name, topics.dt_created FROM topics, authors WHERE topics.authorid=authors.id AND status='0' ORDER BY topics.dt_created DESC, topics.topic";
 	$result = pg_query($con, $sql);
 	while($result_row = pg_fetch_row($result)) {
 		$temp_array = array();

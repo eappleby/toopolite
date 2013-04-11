@@ -345,7 +345,7 @@ if ((isset($_REQUEST["ra"]))||(isset($_REQUEST["sa"]))){
 					$_SESSION["meta-title"] = "What does it feel like to ".$_SESSION['a_approvedAnswer']['topic']."?";
 
 					// Retrieve other topics in same category
-					$_SESSION["a_categoryTopics"] = getCategoryTopics ($_SESSION['a_answeredTopics'][$_SESSION['a_selectedAnsweredTopic']['lcv']]['categoryId'], $_SESSION['a_selectedAnsweredTopic']['id']);
+					$_SESSION["a_categoryTopics"] = getCategoryTopics ($_SESSION['a_answeredTopics'][$_SESSION['a_selectedAnsweredTopic']['lcv']]['categoryid'], $_SESSION['a_selectedAnsweredTopic']['id']);
 
 					// Shuffle that list so that each time user read the article, he/she will see new topics
 					shuffle($_SESSION['a_categoryTopics']);

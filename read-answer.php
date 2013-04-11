@@ -222,7 +222,7 @@
 <?php
 	foreach ($_SESSION['a_categoryTopics'] as $lcv => $a_topic) {
 		if ($lcv<3) {
-			print "											<a href=\"".getUrl("/what-it-feels-like-to-".$a_topic["url"]."/".$a_topic["answerId"]."/")."\">".$a_topic["topic"]."</a><br>";
+			print "											<a href=\"".getUrl("/what-it-feels-like-to-".$a_topic["url"]."/".$a_topic["answerid"]."/")."\">".$a_topic["topic"]."</a><br>";
 		}
 	}
 ?>
@@ -247,7 +247,7 @@
 <?php endif ?>
 									<div class="links last">
 										<div class="content small">
-											<img src="<?php echo getUrl("images/eye.png"); ?>"> <?php echo $_SESSION['a_approvedAnswer']['viewCount']; ?>
+											<img src="<?php echo getUrl("images/eye.png"); ?>"> <?php echo $_SESSION['a_approvedAnswer']['viewcount']; ?>
 										</div>
 									</div>
 								</div>
