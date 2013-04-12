@@ -1,5 +1,4 @@
 Options -Indexes
-ErrorDocument 404 /404
 
 Options +FollowSymlinks
 RewriteEngine On
