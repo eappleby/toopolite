@@ -211,7 +211,7 @@
 												description=<?php echo urlClean($_SESSION['a_approvedAnswers'][$_SESSION['a_selectedApprovedAnswer']['lcv']]['quote']."..."); ?>&
 												redirect_uri=<?php echo urlClean(getUrl("", true)); ?>">Facebook</a><br> */ ?>
 											<a href="http://twitter.com/intent/tweet?url=<?php echo urlClean(getUrl("", true)); ?>&text=<?php echo urlClean("Reading about what it feels like to ".$_SESSION['a_answeredTopics'][$_SESSION['a_selectedAnsweredTopic']['lcv']]['topic']); ?>&via=TooPoliteToAsk" title="Click to share this answer on Twitter">Twitter</a><br>
-											<a href="<?php echo getUrl("share-answer/".$_SESSION['a_selectedApprovedAnswer']['id']."/"); ?>">Email</a>
+											<?php /*<a href="<?php echo getUrl("share-answer/".$_SESSION['a_selectedApprovedAnswer']['id']."/"); ?>">Email</a>*/ ?>
 										</div>
 									</div>
 <?php if (count($_SESSION['a_categoryTopics'])>0) : ?>
