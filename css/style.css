@@ -33,11 +33,11 @@ a:hover {
 }
 
 a.facebook {
-	background: url('http://toopolite.com/images/icon-facebook.png') no-repeat 100% 0;
+	background: url('/images/icon-facebook.png') no-repeat 100% 0;
 	margin: 2px 8px 0 50px;
 	font-weight: bold;
 	line-height: 22px;
-	padding-right: 30px;
+	padding-right: 10px;
 	border: 0;
 	float: left;
 }
@@ -347,7 +347,7 @@ html, body {
  
 #arrowImg{
 	height: 54px;
-	background:url('http://toopolite.com/images/Quote-Bubble-Arrow.png') 0 0;
+	background:url('/images/Quote-Bubble-Arrow.png') 0 0;
  }
 
 #bubble {

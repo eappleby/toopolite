@@ -116,20 +116,20 @@
 #empty-pane-with-question .logo .logo-nav  li, #empty-pane-with-question .logo .logo-nav   a{height:35px;display:block;}
 
 #empty-pane-with-question .logo .logo-nav .logo-too {left:0px;width:69px;}
-#empty-pane-with-question .logo .logo-nav .logo-too {background:url('http://toopolite.com/images/Too-Polite-To-Ask_Logo.png') 0 0;}
-#empty-pane-with-question .logo .logo-nav .logo-too a:hover{background: url('http://toopolite.com/images/Too-Polite-To-Ask_Logo.png') 0 -35px;}
+#empty-pane-with-question .logo .logo-nav .logo-too {background:url('/images/Too-Polite-To-Ask_Logo.png') 0 0;}
+#empty-pane-with-question .logo .logo-nav .logo-too a:hover{background: url('/images/Too-Polite-To-Ask_Logo.png') 0 -35px;}
 
 #empty-pane-with-question .logo .logo-nav .logo-polite {left:69px;width:115px;}
-#empty-pane-with-question .logo .logo-nav .logo-polite {background:url('http://toopolite.com/images/Too-Polite-To-Ask_Logo.png') -70px 0;}
-#empty-pane-with-question .logo .logo-nav .logo-polite a:hover{background: url('http://toopolite.com/images/Too-Polite-To-Ask_Logo.png') -70px -35px;}
+#empty-pane-with-question .logo .logo-nav .logo-polite {background:url('/images/Too-Polite-To-Ask_Logo.png') -70px 0;}
+#empty-pane-with-question .logo .logo-nav .logo-polite a:hover{background: url('/images/Too-Polite-To-Ask_Logo.png') -70px -35px;}
 
 #empty-pane-with-question .logo .logo-nav .logo-to {left:184px;width:49px;}
-#empty-pane-with-question .logo .logo-nav .logo-to {background:url('http://toopolite.com/images/Too-Polite-To-Ask_Logo.png') -186px 0;}
-#empty-pane-with-question .logo .logo-nav .logo-to a:hover{background: url('http://toopolite.com/images/Too-Polite-To-Ask_Logo.png') -186px -35px;}
+#empty-pane-with-question .logo .logo-nav .logo-to {background:url('/images/Too-Polite-To-Ask_Logo.png') -186px 0;}
+#empty-pane-with-question .logo .logo-nav .logo-to a:hover{background: url('/images/Too-Polite-To-Ask_Logo.png') -186px -35px;}
 
 #empty-pane-with-question .logo .logo-nav .logo-ask {left:233px;width:69px;}
-#empty-pane-with-question .logo .logo-nav .logo-ask {background:url('http://toopolite.com/images/Too-Polite-To-Ask_Logo.png') -236px 0;}
-#empty-pane-with-question .logo .logo-nav .logo-ask a:hover{background: url('http://toopolite.com/images/Too-Polite-To-Ask_Logo.png') -236px -35px;}
+#empty-pane-with-question .logo .logo-nav .logo-ask {background:url('/images/Too-Polite-To-Ask_Logo.png') -236px 0;}
+#empty-pane-with-question .logo .logo-nav .logo-ask a:hover{background: url('/images/Too-Polite-To-Ask_Logo.png') -236px -35px;}
 
 #empty-pane-with-question .slogan {
 	margin-top: 10px;
