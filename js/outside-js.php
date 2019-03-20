@@ -70,8 +70,7 @@
 				document.getElementById('fbForceLogin').style.visibility = "visible";
 <?php endif ?>
 				fbConnect.onclick = function() {
-					alert("here");
-//					FB.login(function(response) {}, {scope:'email'});
+					FB.login(function(response) {}, {scope:'email'});
 				};
 			}
 		}
