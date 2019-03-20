@@ -879,7 +879,7 @@ function approveTopic ($pk_topic, $pk_category, $s_topic) {
 }
 
 // Set answer to denied in when given answer pkey 
-function denyanswer ($pk_answer) {
+function denyAnswer ($pk_answer) {
 	$con = __openDB();
 	
 	$sql = "UPDATE answers SET status='2' WHERE id='$pk_answer'";
