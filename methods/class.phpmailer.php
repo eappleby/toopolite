@@ -222,23 +222,6 @@ class PHPMailer
     var $error_count     = 0;
     var $LE              = "\n";
 
-    var $PHPMAILER_LANG  = array();
-
-    $PHPMAILER_LANG["provide_address"] = 'You must provide at least one ' .
-                                         'recipient email address.';
-    $PHPMAILER_LANG["mailer_not_supported"] = ' mailer is not supported.';
-    $PHPMAILER_LANG["execute"] = 'Could not execute: ';
-    $PHPMAILER_LANG["instantiate"] = 'Could not instantiate mail function.';
-    $PHPMAILER_LANG["authenticate"] = 'SMTP Error: Could not authenticate.';
-    $PHPMAILER_LANG["from_failed"] = 'The following From address failed: ';
-    $PHPMAILER_LANG["recipients_failed"] = 'SMTP Error: The following ' .
-                                           'recipients failed: ';
-    $PHPMAILER_LANG["data_not_accepted"] = 'SMTP Error: Data not accepted.';
-    $PHPMAILER_LANG["connect_host"] = 'SMTP Error: Could not connect to SMTP host.';
-    $PHPMAILER_LANG["file_access"] = 'Could not access file: ';
-    $PHPMAILER_LANG["file_open"] = 'File Error: Could not open file: ';
-    $PHPMAILER_LANG["encoding"] = 'Unknown encoding: ';
-
     /**#@-*/
     
     /////////////////////////////////////////////////
@@ -623,7 +606,19 @@ class PHPMailer
             $this->SetError("Could not load language file");
             return false;
         }
-        $this->language = $PHPMAILER_LANG;
+        $this->language = array();
+        $this->language["provide_address"] = 'You must provide at least one recipient email address.';
+        $this->language["mailer_not_supported"] = ' mailer is not supported.';
+        $this->language["execute"] = 'Could not execute: ';
+        $this->language["instantiate"] = 'Could not instantiate mail function.';
+        $this->language["authenticate"] = 'SMTP Error: Could not authenticate.';
+        $this->language["from_failed"] = 'The following From address failed: ';
+        $this->language["recipients_failed"] = 'SMTP Error: The following recipients failed: ';
+        $this->language["data_not_accepted"] = 'SMTP Error: Data not accepted.';
+        $this->language["connect_host"] = 'SMTP Error: Could not connect to SMTP host.';
+        $this->language["file_access"] = 'Could not access file: ';
+        $this->language["file_open"] = 'File Error: Could not open file: ';
+        $this->language["encoding"] = 'Unknown encoding: ';
     
         return true;
     }
