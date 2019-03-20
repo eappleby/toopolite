@@ -34,7 +34,7 @@
 			appId      : '158967034168646', // App ID
 			cookie     : true,
 			xfbml      : true,
-			version    : 'v2.10'});
+			version    : '2.10'});
 //		FB.UIServer.setActiveNode = function(a,b){FB.UIServer._active[a.id]=b;}
 
 		// Facebook login updates in nav bar
@@ -70,28 +70,8 @@
 				document.getElementById('fbForceLogin').style.visibility = "visible";
 <?php endif ?>
 				fbConnect.onclick = function() {
-					// https://developers.facebook.com/docs/reference/javascript/FB.getLoginStatus/
-					FB.getLoginStatus(function(response) {
-						alert(response.status);
-						if (response.status === 'connected') {
-							// The user is logged in and has authenticated your
-							// app, and response.authResponse supplies
-							// the user's ID, a valid access token, a signed
-							// request, and the time the access token 
-							// and signed request each expire.
-							var uid = response.authResponse.userID;
-							var accessToken = response.authResponse.accessToken;
-						} else if (response.status === 'not_authorized') {
-							// The user hasn't authorized your application.  They
-							// must click the Login button, or you must call FB.login
-							// in response to a user gesture, to launch a login dialog.
-						} else {
-							// The user isn't logged in to Facebook. You can launch a
-							// login dialog with a user gesture, but the user may have
-							// to log in to Facebook before authorizing your application.
-							FB.login(function(response) {}, {scope:'email'});
-						}
-					});
+					alert("here");
+//					FB.login(function(response) {}, {scope:'email'});
 				};
 			}
 		}
