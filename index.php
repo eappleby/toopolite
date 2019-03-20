@@ -55,7 +55,7 @@ include("declarations/topic-vars.php");
 			<ul id='header-bar-content' >
  			    <li class='main-logo'>
 					<a class="no_border" href="<?php echo getUrl(); ?>"><img src='/images/ibanner_txt.png'/></a>
-			    </li><?php /*
+			    </li>
 				<li class="hb-button">
 					<div class="nav-buttons">
 						<div id="fbConnect">
@@ -66,10 +66,10 @@ include("declarations/topic-vars.php");
 						<?php endif ?>
 						</div>
 					</div>
-				</li> */ ?>
+				</li>
 				<li class="hb-button">
 					<div class="nav-buttons"><a class="navbar-other" href="<?php echo getUrl("about-tpta/"); ?>">About</a></div>
-				</li> <?php /*
+				</li>
 				<li class="hb-button">
 					<div id="answerLink" class="nav-buttons">
 						<?php if (!$user) {echo "Answer";} else {echo "<a class=\"navbar-other\" href=\"".getUrl("give-your-answer/".$_SESSION['a_selectedAnsweredTopic']['id']."/")."\">Answer</a>";} ?>
@@ -79,7 +79,7 @@ include("declarations/topic-vars.php");
 					<div id="askLink" class="nav-buttons">
 						<?php if (!$user) {echo "Ask";} else {echo "<a class=\"navbar-other\" href=\"".getUrl("suggest-a-topic/".$_SESSION['a_selectedAnsweredTopic']['id']."/")."\">Ask</a>";} ?>
 					</div>
-				</li> */ ?>
+				</li>
 			</ul>
 		</div>
 		<div id="entire-website">
