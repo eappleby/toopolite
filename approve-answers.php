@@ -15,7 +15,7 @@
 											<b>Submitted by:</b> &nbsp;<?php echo htmlClean ($_SESSION['a_unapprovedAnswers'][$_SESSION['a_selectedUnapprovedAnswer']['lcv']]['name']); if ($_SESSION['a_unapprovedAnswers'][$_SESSION['a_selectedUnapprovedAnswer']['lcv']]['anonymous']) { echo " (Anonymous)"; }?>
 										</div>
 										<div class="answer-create-date">
-											<b>Date Submitted:</b> &nbsp;<?php echo $_SESSION['a_unapprovedAnswers'][$_SESSION['a_selectedUnapprovedAnswer']['lcv']]['dt_created']; ?>
+											<b>Date Submitted:</b> &nbsp;<?php echo date('Y-m-d', strtotime($_SESSION['a_unapprovedAnswers'][$_SESSION['a_selectedUnapprovedAnswer']['lcv']]['dt_created'])); ?>
 										</div>
 									</div>
 									<div class="input-text-line long-answer-box">

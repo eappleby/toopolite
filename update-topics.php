@@ -12,13 +12,13 @@
 								<div class="user-input">
 									<div class="medium-text-line">
 										<div class="answer-update-date">
-											<b>Date Last Updated: </b><?php echo $_SESSION['a_approvedTopics'][$_SESSION['a_selectedApprovedTopic']['lcv']]['dt_updated']; ?>
+											<b>Date Last Updated: </b><?php echo date('Y-m-d', strtotime($_SESSION['a_approvedTopics'][$_SESSION['a_selectedApprovedTopic']['lcv']]['dt_updated'])); ?>
 										</div>
 										<div class="answer-author">
 											<b>Submitted by: </b><?php echo htmlClean ($_SESSION['a_approvedTopics'][$_SESSION['a_selectedApprovedTopic']['lcv']]['name']); ?>
 										</div>
 										<div class="answer-create-date">
-											<b>Date Submitted: </b><?php echo $_SESSION['a_approvedTopics'][$_SESSION['a_selectedApprovedTopic']['lcv']]['dt_created']; ?>
+											<b>Date Submitted: </b><?php echo date('Y-m-d', strtotime($_SESSION['a_approvedTopics'][$_SESSION['a_selectedApprovedTopic']['lcv']]['dt_created'])); ?>
 										</div>
 									</div>
 									<div class="categories-wrapper push-down">

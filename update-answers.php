@@ -12,13 +12,13 @@
 								<form action="<?php echo getUrl("admin/answer-updated/"); ?>" onsubmit="return validate_form(this);" method="post">
 									<div class="medium-text-line">
 										<div class="answer-update-date">
-											<b>Date Last Updated:</b> &nbsp;<a href="<?php echo getUrl("previous-answer/".$_SESSION['a_approvedAnswers'][$_SESSION['a_selectedApprovedAnswer']['lcv']]['id']); ?>" onClick="answerPopup(this.href);return(false);"><?php echo $_SESSION['a_approvedAnswers'][$_SESSION['a_selectedApprovedAnswer']['lcv']]['dt_updated']; ?></a>
+											<b>Date Last Updated:</b> &nbsp;<a href="<?php echo getUrl("previous-answer/".$_SESSION['a_approvedAnswers'][$_SESSION['a_selectedApprovedAnswer']['lcv']]['id']); ?>" onClick="answerPopup(this.href);return(false);"><?php echo date('Y-m-d', strtotime($_SESSION['a_approvedAnswers'][$_SESSION['a_selectedApprovedAnswer']['lcv']]['dt_updated'])); ?></a>
 										</div>
 										<div class="answer-author">
 											<b>Submitted by:</b> &nbsp;<?php echo htmlClean ($_SESSION['a_approvedAnswers'][$_SESSION['a_selectedApprovedAnswer']['lcv']]['name']); if ($_SESSION['a_approvedAnswers'][$_SESSION['a_selectedApprovedAnswer']['lcv']]['anonymous']) { echo " (Anonymous)"; }?>
 										</div>
 										<div class="answer-create-date">
-											<b>Date Submitted:</b> &nbsp;<a href="<?php echo getUrl("first-answer/".$_SESSION['a_approvedAnswers'][$_SESSION['a_selectedApprovedAnswer']['lcv']]['id']); ?>" onClick="answerPopup(this.href);return(false);"><?php echo $_SESSION['a_approvedAnswers'][$_SESSION['a_selectedApprovedAnswer']['lcv']]['dt_created']; ?></a>
+											<b>Date Submitted:</b> &nbsp;<a href="<?php echo getUrl("first-answer/".$_SESSION['a_approvedAnswers'][$_SESSION['a_selectedApprovedAnswer']['lcv']]['id']); ?>" onClick="answerPopup(this.href);return(false);"><?php echo date('Y-m-d', strtotime($_SESSION['a_approvedAnswers'][$_SESSION['a_selectedApprovedAnswer']['lcv']]['dt_created'])); ?></a>
 										</div>
 									</div>
 									<div class="input-text-line long-answer-box longer">

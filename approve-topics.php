@@ -15,7 +15,7 @@
 											<b>Submitted by:</b> &nbsp;<?php echo htmlClean ($_SESSION['a_unapprovedTopics'][$_SESSION['a_selectedUnapprovedTopic']['lcv']]['name']); ?>
 										</div>
 										<div class="answer-create-date">
-											<b>Date Submitted:</b> &nbsp;<?php echo $_SESSION['a_unapprovedTopics'][$_SESSION['a_selectedUnapprovedTopic']['lcv']]['dt_created']; ?>
+											<b>Date Submitted:</b> &nbsp;<?php echo date('Y-m-d', strtotime($_SESSION['a_unapprovedTopics'][$_SESSION['a_selectedUnapprovedTopic']['lcv']]['dt_created'])); ?>
 										</div>
 									</div>
 									<div class="categories-wrapper">
