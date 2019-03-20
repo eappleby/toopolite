@@ -32,7 +32,7 @@
 // By default, the overlay window and whitewash will not be shown
 $b_overlay = FALSE;
 
-$user_profile = array("name" => "Evan Appleby", "email" => "toopolite@pubexchange.com");
+$user_profile = array("name" => "Evan Appleby", "email" => "eappleby@toopolite.com");
 
 // If user is on home page for the first time
 if (empty($_GET)) {
