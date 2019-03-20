@@ -85,7 +85,7 @@ function htmlEscapeAndLinkUrls($text)
             else
             {
                 // Prepend http:// if no protocol specified
-                $completeUrl = $protocol ? $url : "http://$url";
+                $completeUrl = $protocol ? $url : "https://$url";
                 $linkText = "$domain$port$path";
             }
             

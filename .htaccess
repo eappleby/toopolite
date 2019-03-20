@@ -4,11 +4,15 @@ ErrorDocument 404 /404
 Options +FollowSymlinks
 RewriteEngine On
 
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
 RewriteCond %{HTTP_HOST} ^www\.toopolite\.herokuapp\.com$ [NC]
-RewriteRule ^.*$ http://toopolite.herokuapp.com%{REQUEST_URI} [R=301,L]
+RewriteRule ^.*$ https://toopolite.herokuapp.com%{REQUEST_URI} [R=301,L]
 
 RewriteCond %{HTTP_HOST} ^www\.toopolite\.com$ [NC]
-RewriteRule ^.*$ http://toopolite.com%{REQUEST_URI} [R=301,L]
+RewriteRule ^.*$ https://toopolite.com%{REQUEST_URI} [R=301,L]
 
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.php\ HTTP/ 
 RewriteRule ^index\.php$ / [R=301,L] 

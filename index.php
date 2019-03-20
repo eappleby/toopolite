@@ -22,10 +22,10 @@ include("declarations/form-vars.php");
 include("declarations/session-vars.php");
 include("declarations/topic-vars.php");
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:fb="http://www.facebook.com/2008/fbml">
-	<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# toopolitetoask: http://ogp.me/ns/fb/toopolitetoask#">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "https://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml"
+      xmlns:fb="https://www.facebook.com/2008/fbml">
+	<head prefix="og: https://ogp.me/ns# fb: https://ogp.me/ns/fb# toopolitetoask: https://ogp.me/ns/fb/toopolitetoask#">
 		<title><?php echo htmlClean($_SESSION["meta-title"]); ?></title>
 		<link rel="icon" type="image/ico" href="<?php echo getUrl("favicon.ico"); ?>"></link> 
 		<link rel="shortcut icon" href="<?php echo getUrl("favicon.ico"); ?>"></link>

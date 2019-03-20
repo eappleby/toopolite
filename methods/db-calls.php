@@ -639,12 +639,12 @@ function getTopicStatus ($pk_topic) {
 // Return string of Too Polite To Ask domain (e.g. "http://toopolite.com/")
 function getUrl ($uri="", $b_currentPage=false) {
 	if ($b_currentPage) {
-		return "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; 
+		return "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; 
 	}
 	if (substr($uri, 0, 1) == "/") {
-		return "http://".$_SERVER['HTTP_HOST'].$uri;
+		return "https://".$_SERVER['HTTP_HOST'].$uri;
 	}
-	return "http://".$_SERVER['HTTP_HOST']."/".$uri;
+	return "https://".$_SERVER['HTTP_HOST']."/".$uri;
 }
 
 // return TRUE if status=1
