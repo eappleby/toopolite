@@ -72,6 +72,7 @@
 				fbConnect.onclick = function() {
 					// https://developers.facebook.com/docs/reference/javascript/FB.getLoginStatus/
 					FB.getLoginStatus(function(response) {
+						alert(response.status);
 						if (response.status === 'connected') {
 							// The user is logged in and has authenticated your
 							// app, and response.authResponse supplies
