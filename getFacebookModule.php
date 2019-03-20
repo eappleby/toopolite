@@ -2,7 +2,7 @@
 	require_once("facebook-php-sdk/src/facebook.php");
 	$facebook = new Facebook(array(
 	  'appId'  => '158967034168646',
-	  'secret' => '71da3bb60bb033ddda0ca955bb4e31b7',
+	  'secret' => $_ENV["FACEBOOK_SECRET"],
 	));
 	$user = $facebook->getUser();
 	if ($user) {
