@@ -32,11 +32,10 @@
 	window.fbAsyncInit = function() {
 		FB.init({ 
 			appId      : '158967034168646', // App ID
-			channelUrl : 'https://toopolite.herokuapp.com/channel.php', // Channel File
-			status: true, 
-			cookie: true,
-			xfbml: true});
-		FB.UIServer.setActiveNode = function(a,b){FB.UIServer._active[a.id]=b;}
+			cookie     : true,
+			xfbml      : true,
+			version    : '2.10'});
+//		FB.UIServer.setActiveNode = function(a,b){FB.UIServer._active[a.id]=b;}
 
 		// Facebook login updates in nav bar
 		var fbConnect = document.getElementById('fbConnect');
@@ -71,8 +70,8 @@
 				document.getElementById('fbForceLogin').style.visibility = "visible";
 <?php endif ?>
 				fbConnect.onclick = function() {
-					FB.login(function(response) {}, {scope:'email, publish_actions'});
-				};			
+					FB.login(function(response) {}, {scope:'email'});
+				};
 			}
 		}
 
@@ -100,12 +99,13 @@
 	};
 	
 	// Facebook async code
-	(function() {
-		var e = document.createElement('script'); e.async = true;
-		e.src = document.location.protocol 
-		+ '//connect.facebook.net/en_US/all.js';
-		document.getElementById('fb-root').appendChild(e);
-	}());
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
 
 <?php if (isset($_REQUEST["ra"])) : ?>
 	document.getElementById("color-bar").style.height = document.getElementById("reading-pane").clientHeight+"px";
