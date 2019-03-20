@@ -10,6 +10,7 @@
 	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	})();
 </script>
+<!--
 <script type="text/javascript" charset="utf-8">
 	// Get Satisfaction feedback plugin
 	var is_ssl = ("https:" == document.location.protocol);
@@ -25,13 +26,13 @@
 	feedback_widget_options.style = "idea";
 
 	var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
-</script>
+</script> -->
 <script>
 	// Facebook asynchronous initialization
 	window.fbAsyncInit = function() {
 		FB.init({ 
 			appId      : '158967034168646', // App ID
-			channelUrl : 'http://toopolite.com/channel.php', // Channel File
+			channelUrl : 'https://toopolite.herokuapp.com/channel.php', // Channel File
 			status: true, 
 			cookie: true,
 			xfbml: true});
@@ -114,7 +115,7 @@
 		exdate.setDate(exdate.getDate() + exdays);
 		
 		var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-		document.cookie=c_name + "=" + c_value + ";domain=.toopolite.com;path=/";;
+		document.cookie=c_name + "=" + c_value + ";domain=.toopolite.herokuapp.com;path=/";;
 	}
 
 	function getCookie(c_name) {
@@ -300,6 +301,6 @@
 </script>
 
 <?php if (isset($_REQUEST["ra"])): ?>
-<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-<script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script>
+<script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
 <?php endif; ?>
