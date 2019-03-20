@@ -14,7 +14,7 @@
 								if ($_SESSION['a_approvedAnswer']['citation_url']) { 
 
 									// get host name from URL
-									preg_match('@^(?:http://)?([^/]+)@i', $_SESSION['a_approvedAnswer']['citation_url'], $matches);
+									preg_match('@^(?:https?://)?([^/]+)@i', $_SESSION['a_approvedAnswer']['citation_url'], $matches);
 									$host = $matches[1];
 
 									// get last two segments of host name
