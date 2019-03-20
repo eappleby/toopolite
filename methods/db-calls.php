@@ -754,7 +754,7 @@ function addAnswer ($pk_topic, $s_name, $s_email, $s_answer, $b_anonymous, $b_bo
 	
 	__closeDB($con);
 
-	emailUser ("New Answer Added", "eappleby@toopolite.com", $s_name." submitted new answer", $s_answer);	
+	emailUser ("New Answer Added", "evan.appleby@gmail.com", $s_name." submitted new answer", $s_answer);	
 }
 
 // Add new author into author database (if author already in database, name and email is updated; newsletter can only go from FALSE to TRUE)
@@ -776,14 +776,14 @@ function addTopic ($s_topic, $s_name, $s_email, $b_notifyauth, $b_newsletter) {
 	if (!$pk_existingTopic) {
 		$pk_author = __addAuthor ($con, $s_name, $s_email, $b_newsletter);	
 		$sql = "INSERT INTO topics (topic, topic_url, authorid, notifyauth) VALUES ('".__dbClean($s_topic, $con)."', '" . stringToUrl(__dbClean($s_topic, $con)) ."', '$pk_author', " . __bool($b_notifyauth) . ")";
-		if (!pg_query($con, $sql)) { die('Could not insert new topic into database: ' . pg_last_error() . " - '".__dbClean($s_topic, $con)."', '" . stringToUrl(__dbClean($s_topic, $con)) ."', '$pk_author', " . __bool($b_notifyauth)); }
+		if (!pg_query($con, $sql)) { die('Could not insert new topic into database: ' . pg_last_error() . " - $sql"; ); }
 	}
 	__closeDB($con);
 	
 	if (!$pk_existingTopic) {
-		emailUser ("New Topic Added", "eappleby@toopolite.com", $s_name." submitted new topic", $s_topic);
+		emailUser ("New Topic Added", "evan.appleby@gmail.com", $s_name." submitted new topic", $s_topic);
 	} else {
-		emailUser ("New Topic Submitted, but Already Exists", "eappleby@toopolite.com", $s_name." submitted new topic", $s_topic);
+		emailUser ("New Topic Submitted, but Already Exists", "evan.appleby@gmail.com", $s_name." submitted new topic", $s_topic);
 	}
 	
 	return $pk_existingTopic;
@@ -799,7 +799,7 @@ function confirmInterview ($pk_topic, $s_name, $s_email, $s_biography, $b_legal,
 	
 	__closeDB($con);
 
-	emailUser ("Interview Information Received", "eappleby@toopolite.com", $s_name." submitted information", $s_biography);	
+	emailUser ("Interview Information Received", "evan.appleby@gmail.com", $s_name." submitted information", $s_biography);	
 }
 
 /* ADMIN FUNCTIONS
