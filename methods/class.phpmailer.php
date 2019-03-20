@@ -606,7 +606,7 @@ class PHPMailer
             $this->SetError("Could not load language file");
             return false;
         }
-        $this->language = array();
+
         $this->language["provide_address"] = 'You must provide at least one recipient email address.';
         $this->language["mailer_not_supported"] = ' mailer is not supported.';
         $this->language["execute"] = 'Could not execute: ';
