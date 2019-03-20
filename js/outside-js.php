@@ -34,7 +34,7 @@
 			appId      : '158967034168646', // App ID
 			cookie     : true,
 			xfbml      : true,
-			version    : '2.10'});
+			version    : 'v2.10'});
 //		FB.UIServer.setActiveNode = function(a,b){FB.UIServer._active[a.id]=b;}
 
 		// Facebook login updates in nav bar
