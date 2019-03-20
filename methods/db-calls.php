@@ -776,7 +776,7 @@ function addTopic ($s_topic, $s_name, $s_email, $b_notifyauth, $b_newsletter) {
 	if (!$pk_existingTopic) {
 		$pk_author = __addAuthor ($con, $s_name, $s_email, $b_newsletter);	
 		$sql = "INSERT INTO topics (topic, topic_url, authorid, notifyauth) VALUES ('".__dbClean($s_topic, $con)."', '" . stringToUrl(__dbClean($s_topic, $con)) ."', '$pk_author', " . __bool($b_notifyauth) . ")";
-		if (!pg_query($con, $sql)) { die('Could not insert new topic into database: ' . pg_last_error()); }
+		if (!pg_query($con, $sql)) { die('Could not insert new topic into database: ' . pg_last_error() . " - '".__dbClean($s_topic, $con)."', '" . stringToUrl(__dbClean($s_topic, $con)) ."', '$pk_author', " . __bool($b_notifyauth)); }
 	}
 	__closeDB($con);
 	
