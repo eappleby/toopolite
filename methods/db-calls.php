@@ -900,10 +900,8 @@ function denyTopic ($pk_topic) {
 
 // Notify user about approved topic or answer, or just send them a promotional email
 function emailUser ($s_name, $s_email, $s_subject, $s_message) {
-	echo "1";
 	$mail = new PHPMailer();
     
-    echo "2";
     $mail->ClearAddresses(); 
     $mail->ClearAttachments();
     $mail->IsHTML(true);
@@ -926,7 +924,6 @@ function emailUser ($s_name, $s_email, $s_subject, $s_message) {
 		echo "Mailer Error: " . $mail->ErrorInfo;
 		exit;
 	}
-	echo "3";
 }
 
 // Return array of answer IDs, corresponding topic url, last modification dates, and ranking
