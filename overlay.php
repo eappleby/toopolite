@@ -13,11 +13,12 @@
 					else if ((isset($_REQUEST["abt"]))||(isset($_REQUEST["csa"]))||(isset($_REQUEST["tos"]))||(isset($_REQUEST["ccp"]))||(isset($_REQUEST["ppo"]))||(isset($_REQUEST["agu"]))) { include ("legal.php"); }
 					else { 
 						include ("update-using-topic-list.php"); 
+/*
 						print "		<div id=\"fbForceLogin\"";
 						if ($user){
 							print " style=\"visibility:hidden;\" ";
 						}
-						print "><div id=\"whitewash52\"></div><div id=\"fbLoginPopup\"><h3>Must be logged in to view this page</h3><div class=\"fb-login-button\" data-show-faces=\"false\" data-width=\"200\" data-max-rows=\"1\">Log in with Facebook</div></div></div>";
+						print "><div id=\"whitewash52\"></div><div id=\"fbLoginPopup\"><h3>Must be logged in to view this page</h3><div class=\"fb-login-button\" data-show-faces=\"false\" data-width=\"200\" data-max-rows=\"1\">Log in with Facebook</div></div></div>"; */
 					}
 					?>
 				</div>
