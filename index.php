@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once("facebook-php-sdk/src/facebook.php");
+require("methods/db-calls.php");
 
 $facebook = new Facebook(array(
   'appId'  => '158967034168646',
