@@ -342,7 +342,6 @@ class PHPMailer
      * @return bool
      */
     function Send() {
-        echo "1";
         $header = "";
         $body = "";
         $result = true;
@@ -362,8 +361,6 @@ class PHPMailer
         $header .= $this->CreateHeader();
         $body = $this->CreateBody();
 
-        echo "2";
-
         if($body == "") { return false; }
 		
         // Choose the mailer
@@ -373,7 +370,6 @@ class PHPMailer
                 $result = $this->SendmailSend($header, $body);
                 break;
             case "mail":
-                echo "3";
                 $result = $this->MailSend($header, $body);
                 break;
             case "smtp":
@@ -423,7 +419,6 @@ class PHPMailer
      * @return bool
      */
     function MailSend($header, $body) {
-        echo "4";
         $to = "";
         for($i = 0; $i < count($this->to); $i++)
         {
@@ -431,9 +426,9 @@ class PHPMailer
             $to .= $this->to[$i][0];
         }
 
-        echo "5";
         if ($this->Sender != "" && strlen(ini_get("safe_mode"))< 1)
         {
+            echo "1";
             $old_from = ini_get("sendmail_from");
             ini_set("sendmail_from", $this->Sender);
             $params = sprintf("-oi -f %s", $this->Sender);
@@ -442,23 +437,20 @@ class PHPMailer
         }
         else
 		{
+            echo "2";
             $rt = @mail($to, $this->EncodeHeader($this->Subject), $body, $header);
 		}
 				
-        echo "6";
         if (isset($old_from))
             ini_set("sendmail_from", $old_from);
 
-        echo "7";
         if(!$rt)
         {
-            echo "8";
             $this->SetError($this->Lang("instantiate"));
 			echo $this->ErrorInfo;
             return false;
         }
 
-        echo "9";
         return true;
     }
 
