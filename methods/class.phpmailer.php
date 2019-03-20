@@ -428,7 +428,6 @@ class PHPMailer
 
         if ($this->Sender != "" && strlen(ini_get("safe_mode"))< 1)
         {
-            echo "1";
             $old_from = ini_get("sendmail_from");
             ini_set("sendmail_from", $this->Sender);
             $params = sprintf("-oi -f %s", $this->Sender);
@@ -437,7 +436,6 @@ class PHPMailer
         }
         else
 		{
-            echo "2";
             $rt = @mail($to, $this->EncodeHeader($this->Subject), $body, $header);
 		}
 				
