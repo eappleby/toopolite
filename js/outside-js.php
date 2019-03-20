@@ -44,12 +44,15 @@
 
 		function updateButton(response) {
 			if (response.authResponse) {
+
+/*
 				//user is already logged in and connected
 				FB.api('/me', function(user) {
 					fbConnect.innerHTML = '<a class="navbar-other">Log out</a>';
 					answerLink.innerHTML = '<a class="navbar-other" href="<?php echo getUrl("give-your-answer/".$_SESSION['a_selectedAnsweredTopic']['id']."/"); ?>">Answer</a>';
 					askLink.innerHTML = '<a class="navbar-other" href="<?php echo getUrl("suggest-a-topic/".$_SESSION['a_selectedAnsweredTopic']['id']."/"); ?>">Ask</a>';
 				});
+*/
 
 <?php if ((isset($_REQUEST["ga"]))||(isset($_REQUEST["af"]))||(isset($_REQUEST["st"]))) : ?>
 				// Now that the user is logged in, remove popup window that tells users to login if they want to give answer, ask friend or submit new topic
@@ -60,10 +63,12 @@
 				};
 				
 			} else {
+/*
 				//user is not connected to your app or logged out
 				fbConnect.innerHTML = '<a class="navbar-login">Log in</a>';
 				answerLink.innerHTML = 'Answer';
 				askLink.innerHTML = 'Ask';
+*/
 
 <?php if ((isset($_REQUEST["ga"]))||(isset($_REQUEST["af"]))||(isset($_REQUEST["st"]))) : ?>
 				// Popup window that tells users to login if they want to give answer, ask friend or submit new topic
